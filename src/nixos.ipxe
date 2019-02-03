@@ -1,0 +1,25 @@
+#!ipxe
+
+# NixOS
+# https://nixos.org/
+
+goto ${menu}
+
+:nixos
+set os NixOS Linux
+menu ${os} Installers
+item --gap Official Releases
+item 18.09 ${space} ${os}
+choose nixos_version || goto nixos_exit
+goto nixos_boot
+
+:nixos_boot
+set nixos_initrd http://lassul.us/netboot/initrd
+kernel ${memdisk} iso raw copytoram
+initrd ${nixos_initrd}
+boot
+goto nixos_exit
+
+:nixos_exit
+clear menu
+exit 0
